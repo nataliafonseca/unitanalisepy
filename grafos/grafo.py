@@ -53,7 +53,7 @@ def teste_grafo_definido(grafo):
     if not grafo:
         print(Fore.RED + "ATENÇÃO! Você ainda não definiu um grafo, "
                          "serão impressas as informações correspondentes "
-                         "ao grafo representado em 'exemplo/simples.png'. "
+                         "ao grafo representado em 'exemplo.png'. "
                          "Para adicionar seu proprio grafo, selecione a "
                          "opção 1."
               + Fore.RESET)
@@ -162,7 +162,7 @@ def listar_grafos_salvos():
     with open("grafos.json", "r") as grafos_json:
         for line in grafos_json:
             grafo = decode(line)
-            grafo.imprimir_informacoes()
+            imprimir_informacoes(grafo)
 
 
 def retorna_grafo(grafo_id):
@@ -344,7 +344,7 @@ def sistema():
             print()
             cabecalho("Opção 3 - Imprimir Informações do Grafo")
             grafo, definido = teste_grafo_definido(grafo)
-            grafo.imprimir_informacoes()
+            imprimir_informacoes(grafo)
             if not definido:
                 grafo = None
             print()
