@@ -308,87 +308,20 @@ class Grafo:
                       matriz_adjacencia[idx])
         print(x)
 
-
-# <editor-fold desc="Sistema">
-def sistema():
-    grafo = None
-
-    while True:
-        resposta = menu(["Definir Grafo",
-                         "Resgatar Grafo Salvo",
-                         "Imprimir Informações do Grafo",
-                         "Imprimir Matriz de Adjacencia",
-                         "Imprimir Estrutura de Adjacencia",
-                         "Sair do sistema"])
-
-        if resposta == 1:
-            print()
-            cabecalho("Opção 1 - Definir Grafo")
-            grafo = definir_grafo()
-            print(
-                Fore.BLUE + "Deseja salvar seu grafo? digite 1 para sim ou 0 "
-                            "para não:" + Fore.RESET)
-            cadastrar = bool(int(input()))
-            if cadastrar:
-                print()
-                cadastrar_grafo(grafo)
-            print()
-
-        elif resposta == 2:
-            print()
-            cabecalho("Opção 2 - Resgatar Grafo Salvo")
-            grafo = resgatar_grafo()
-            print()
-
-        elif resposta == 3:
-            print()
-            cabecalho("Opção 3 - Imprimir Informações do Grafo")
-            grafo, definido = teste_grafo_definido(grafo)
-            imprimir_informacoes(grafo)
-            if not definido:
-                grafo = None
-            print()
-
-        elif resposta == 4:
-            print()
-            cabecalho("Opção 4 - Imprimir Matriz de Adjacencia")
-            grafo, definido = teste_grafo_definido(grafo)
-            grafo.imprimir_matriz_adjacencia()
-            if not definido:
-                grafo = None
-            print()
-
-        elif resposta == 5:
-            print()
-            cabecalho("Opção 5 - Imprimir Estrutura de Adjacencia")
-            grafo, definido = teste_grafo_definido(grafo)
-            grafo.imprimir_estrutura_adjacencia()
-            if not definido:
-                grafo = None
-            print()
-
-        elif resposta == 6:
-            print()
-            cabecalho("Saindo do sistema... Até logo!")
-            sleep(1)
-            break
-
-        else:
-            print(Fore.RED + "ERRO: Por favor, digite um número inteiro entre "
-                             "1 e 6" + Fore.RESET)
-            print()
-
-        sleep(2)
-
-
-# sistema()
-
-# </editor-fold>
-
+    def get_adjacentes(self, vertice):
+        """
+        Método que recebe um vértice do grafo e retorna uma lista
+        contendo os vértices adjacentes a ele.
+        """
+        grafo = self.estrutura_adjacencia()
+        adjacentes = []
+        for i in grafo[vertice]:
+            adjacentes.append(i['vertice_id'])
+        return adjacentes
 
 # <editor-fold desc="Questões">
 
-cabecalho("Questão 1")
+# cabecalho("Questão 1")
 # 1. Usando os conceitos de orientação a objetos: Implementar uma Matriz
 # de Adjacência e uma Lista de Adjacência, ambos representando o grafo
 # da imagem.
@@ -403,13 +336,13 @@ cabecalho("Questão 1")
 # grafo1 = Grafo(g1_digrafo, g1_valorado, g1_vertices, g1_arestas)
 # _cadastrar_grafo(grafo1, grafo_id='grafo1')
 
-grafo1 = retorna_grafo('grafo1')
-cabecalho("Matriz de Adjacencia")
-grafo1.imprimir_matriz_adjacencia()
-cabecalho("Estrutura de Adjacencia")
-grafo1.imprimir_estrutura_adjacencia()
-
-cabecalho("Questão 2")
+# grafo1 = retorna_grafo('grafo1')
+# cabecalho("Matriz de Adjacencia")
+# grafo1.imprimir_matriz_adjacencia()
+# cabecalho("Estrutura de Adjacencia")
+# grafo1.imprimir_estrutura_adjacencia()
+#
+# cabecalho("Questão 2")
 # 2. Escolha uma estrutura de dados de grafos (Matriz ou Lista de
 # Adjacência), para fazer a seguinte implementação:
 # a) Ler o grafo contigo no arquivo "com-friendster.top5000.cmty.txt");
@@ -420,25 +353,64 @@ cabecalho("Questão 2")
 #
 # g2_digrafo = True
 # g2_valorado = False
-# g2_vertices = []
+# g2_vertices = set()
 # g2_arestas = []
 #
 # with open("com-friendster.top5000.cmty.txt", "r") as file:
 #     for line in file:
 #         vertices = line.strip().split("	")
-#         if vertices[0] not in g2_vertices:
-#             g2_vertices.append(vertices[0])
+#         g2_vertices.add(vertices[0])
 #         for vertice in vertices[1::]:
-#             if vertice not in g2_vertices:
-#                 g2_vertices.append(vertice)
+#             g2_vertices.add(vertice)
 #             g2_arestas.append(f"{vertices[0]}-{vertice}")
 #
-# grafo2 = Grafo(g2_digrafo, g2_valorado, g2_vertices, g2_arestas)
+# grafo2 = Grafo(g2_digrafo, g2_valorado, list(g2_vertices), g2_arestas)
 # _cadastrar_grafo(grafo2, grafo_id='grafo2')
 
-grafo2 = retorna_grafo('grafo2')
+# grafo2 = retorna_grafo('grafo2')
 # cabecalho("Matriz de Adjacencia")
 # grafo2.imprimir_matriz_adjacencia()  # Estourando a memória
-cabecalho("Estrutura de Adjacencia")
-grafo2.imprimir_estrutura_adjacencia()
+# cabecalho("Estrutura de Adjacencia")
+# grafo2.imprimir_estrutura_adjacencia()
+
+cabecalho("Questão 3")
+# Dado um grafo qualquer, descrito em um arquivo TXT, fazer:
+# 1. Criar um método para calcular a quantidade numérica dos vértices do grafo;
+# 2. Criar um método para imprimir os vértices do grafo descrito no arquivo TXT, e a
+# quantidade numérica de vértices adjacentes;
+# 3. Um método que informa a complexidade do grafo. {n + m | n = número de vértices do grafo e m = número de arestas}
+
+# Extração e cadastro do grafo:
+
+# g3_digrafo = True
+# g3_valorado = False
+# g3_vertices = set()
+# g3_arestas = []
+
+# with open("grafo-5000.txt", "r") as file:
+#     i = 1
+#     for line in file:
+#         vertices = line.strip().split("	")
+#         g3_vertices.add(vertices[0])
+#         for vertice in vertices[1::]:
+#             g3_vertices.add(vertice)
+#             g3_arestas.append(f"{vertices[0]}-{vertice}")
+#         print(f"linha {i} ok!")
+#         i += 1
+# grafo3 = Grafo(g3_digrafo, g3_valorado, list(g3_vertices), g3_arestas)
+# _cadastrar_grafo(grafo3, grafo_id='grafo3')
+
+grafo3 = retorna_grafo('grafo3')
+
+for vertice in grafo3._vertices:
+    adjacentes = grafo3.get_adjacentes(vertice)
+    print(f"Vértice {vertice}: {len(adjacentes)} adjacentes")
+
+q_vertices = len(grafo3._vertices)
+q_arestas = len(grafo3._arestas)
+print(f"\nQuantidade de Vértices: {q_vertices}")
+print(f"Quantidade de Arestas: {q_arestas}")
+
+print(f"\nComplexidade do Grafo: {q_vertices + q_arestas}")
+
 # </editor-fold>
